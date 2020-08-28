@@ -73,9 +73,9 @@ router.patch('/user/:id', async (req, res) => {
 });
 
 //# Get contact details by a mobile number
-router.get('/user/number', async (req, res) => {
+router.get('/user/:mobile', async (req, res) => {
   try {
-    const query = { mobile: req.body.mobile };
+    const query = { mobile: req.params.mobile };
     const user = await User.find(query);
     res.status(200).json(user);
   } catch (err) {
