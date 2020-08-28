@@ -3,10 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const pbookRoutes = require('./routes/pbookRoutes');
+const expressValidator = require('express-validator');
 
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(expressValidator());
 app.use(pbookRoutes);
 
 const mongoUri =
