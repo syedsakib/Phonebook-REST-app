@@ -38,6 +38,13 @@ app.get('/', (req, res) => {
   res.send('Hi there');
 });
 
+app.all('*', (req, res) => {
+  res.status(404).json({
+    status: 'fail',
+    message: `Can not find ${req.originalUrl} on this service`,
+  });
+});
+
 app.listen(3000, () => {
   console.log('Listening on port 3000');
 });

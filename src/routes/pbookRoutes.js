@@ -5,12 +5,18 @@ const User = mongoose.model('User');
 const router = express.Router();
 
 //# Get all the contacts
-router.get('/user', async (req, res) => {
+router.get('/users', async (req, res) => {
   try {
     const users = await User.find();
-    res.status(200).json(users);
+    res.status(200).json({
+      status: 'success',
+      data: { users },
+    });
   } catch (err) {
-    return res.status(422).send(err.message);
+    return res.status(422).json({
+      status: 'fail',
+      message: err.message,
+    });
   }
 });
 
@@ -30,11 +36,14 @@ router.post('/user', async (req, res) => {
       await user.save();
       res.status(200).json({
         message: 'Contact Created Successfully',
-        user,
+        data: { user },
       });
     }
   } catch (err) {
-    return res.status(422).send(err.message);
+    return res.status(422).json({
+      status: 'fail',
+      message: err.message,
+    });
   }
 });
 
@@ -42,12 +51,15 @@ router.post('/user', async (req, res) => {
 router.delete('/user/:number', async (req, res) => {
   try {
     const number = req.params.number;
-    await User.deleteOne({ mobile: number });
+    const user = await User.deleteOne({ mobile: number });
     res.status(200).json({
       message: 'Contact deleted',
     });
   } catch (err) {
-    return res.status(422).send(err.message);
+    return res.status(422).json({
+      status: 'fail',
+      message: err.message,
+    });
   }
 });
 
@@ -63,12 +75,17 @@ router.patch('/user/:id', async (req, res) => {
     } else {
       const id = req.params.id;
       await User.updateOne({ _id: id }, { $set: { mobile: req.body.mobile } });
+      const updatedUser = await User.find({ _id: id });
       res.status(200).json({
         message: 'number updated successfully',
+        updatedUser,
       });
     }
   } catch (err) {
-    return res.status(422).send(err.message);
+    return res.status(422).json({
+      status: 'fail',
+      message: err.message,
+    });
   }
 });
 
@@ -77,9 +94,15 @@ router.get('/user/:mobile', async (req, res) => {
   try {
     const query = { mobile: req.params.mobile };
     const user = await User.find(query);
-    res.status(200).json(user);
+    res.status(200).json({
+      status: 'success',
+      user,
+    });
   } catch (err) {
-    return res.status(422).send(err.message);
+    return res.status(422).json({
+      status: 'fail',
+      message: err.message,
+    });
   }
 });
 
