@@ -1,7 +1,7 @@
 # Phonebook-REST-app
 ## To run the api : 
- ## git pull
- ## npm run dev
+ # git pull
+ # npm run dev
 
 Documentation:
 
